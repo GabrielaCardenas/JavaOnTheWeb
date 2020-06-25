@@ -11,7 +11,9 @@
 	
 	<form action="ComparaNumero" method="post">
 		<p>Ingresa un número para adivinar</p>
+		<% if(session.getAttribute("button")=="Try") {  %>
 		<input type="number" name="numeroDado">
+		<% } %>
 		<button> <%= session.getAttribute("button") %> </button>
 	</form>
 	

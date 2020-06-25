@@ -28,18 +28,19 @@ public class Inicio extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doPost(request, response);
+
+		//Para ejecutar formulario de inicio
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/IngresaRango.jsp");
+		view.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 		
-		//Para ejecutar formulario de inicio
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/IngresaRango.jsp");
-		view.forward(request, response);
 	}
 
 }

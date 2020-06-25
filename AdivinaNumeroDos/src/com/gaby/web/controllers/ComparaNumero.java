@@ -38,7 +38,7 @@ public class ComparaNumero extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//Inicio sesion
+		//Continuo sesion
 		HttpSession misession= (HttpSession) request.getSession();
 		
 		//Guardo String en sesion para usarlos en JSP
@@ -47,7 +47,6 @@ public class ComparaNumero extends HttpServlet {
 		
 		//Usando contador
 		int count = (int) misession.getAttribute("click");
-		misession.getAttribute("clicks");
 		misession.setAttribute("click", count);
 				
 		//Obtengo parametro numeroDado del formulario
@@ -55,14 +54,10 @@ public class ComparaNumero extends HttpServlet {
 		int numeroRandom = (int) misession.getAttribute("numeroRandom");
 		
 		//Al comienzo numeroDado es null
-		if(numeroDado==null) {
+		if(numeroDado==null || numeroDado.isEmpty()) {
 			misession.setAttribute("Ayuda", "Ingresa un número");
 			misession.setAttribute("click", count);
 			misession.setAttribute("clicks", " disponibles para jugar");
-		}
-		
-		if(numeroDado.isEmpty()) {
-			misession.setAttribute("Ayuda", "Ingresa un número");
 		}
 		
 		//Con el dato ingresa comienzo a comparar
@@ -75,24 +70,11 @@ public class ComparaNumero extends HttpServlet {
     		//Si es adivinado
     		if(numDado == numeroRandom ){
     			
-    			count=12;
-    			misession.setAttribute("click", count);
-    			misession.setAttribute("clicks", " disponibles para jugar");
-    			
-    			//Obtengo valores numero1 y numero2 en sesion
-    			String numero1 = (String) misession.getAttribute("numero1");
-    	        String numero2 = (String) misession.getAttribute("numero2");
-    	        
-    	        int num1 = Integer.parseInt(numero1);
-    	        int num2 = Integer.parseInt(numero2);
-    			
     			//Se guarda el mensaje en sesion para usar en JSP
         		misession.setAttribute("Ayuda", numeroDado + " is the number!");
-        		//Se genera nuevo numero aleatorio
-        		numeroRandom = (int) Math.floor(Math.random()*(num1-num2+1)+num2);
+        		
         		//Cambia el valor de button para jugar de nuevo
         		misession.setAttribute("button", "Jugar de nuevo");
-        		misession.setAttribute("numeroRandom", numeroRandom);
     		}
     		
     		//Si es muy menor se guarda mensaje para usar en JSP
@@ -111,9 +93,7 @@ public class ComparaNumero extends HttpServlet {
 		}
 		
 		//Si el botón es clickeado (distinto de null), dar valor count a "button" disminuido en 1
-		if (misession.getAttribute("click") != null) {
-			//GetAttribute entrega valor Object
-		   	count = (int) misession.getAttribute("click");
+		if ("Try".equals(misession.getAttribute("button"))) {
 		   	count--;
 		   	misession.setAttribute("click", count);
 		}
@@ -124,24 +104,27 @@ public class ComparaNumero extends HttpServlet {
 		}
 		
 		//Cuando el jugador pierde
-		if(count == 0) {
+		if("Jugar de nuevo".equals(misession.getAttribute("button")) || count<0) {
 			
-			count=11;
+			count=10;
 			misession.setAttribute("click", count);
-			misession.setAttribute("clicks", " Has perdido!");
+			misession.setAttribute("clicks", " disponibles para jugar");
+			
 			//Obtengo valores numero1 y numero2 en sesion
 			String numero1 = (String) misession.getAttribute("numero1");
 	        String numero2 = (String) misession.getAttribute("numero2");
 	        
 	        int num1 = Integer.parseInt(numero1);
 	        int num2 = Integer.parseInt(numero2);
-			
-    		//Se genera nuevo numero aleatorio
+	        
+	        //Se genera nuevo numero aleatorio
     		numeroRandom = (int) Math.floor(Math.random()*(num1-num2+1)+num2);
-    		//Cambia el valor de button para jugar de nuevo
-    		misession.setAttribute("button", "Jugar de nuevo");
     		misession.setAttribute("numeroRandom", numeroRandom);
     		
+		}
+		else if(count==0) {
+			misession.setAttribute("clicks", " Has perdido!");
+			misession.setAttribute("button", "Jugar de nuevo");
 		}
 		
 		//Puede seguir jugando intentos mayor a cero
