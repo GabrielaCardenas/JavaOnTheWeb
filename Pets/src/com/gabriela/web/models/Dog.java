@@ -4,9 +4,7 @@ public class Dog extends Animal implements Pet {
 	
 	// Enviar parámetros de entrada a métodos Setter
 	public Dog(String name, String breed, int weight) {
-		setName(name);
-		setBreed(breed);
-		setWeight(weight);
+		super(name, breed, weight);
 	}
 
 	public String ShowAffection() {
